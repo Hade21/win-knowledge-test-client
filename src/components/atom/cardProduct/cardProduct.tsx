@@ -1,5 +1,10 @@
+import { useState } from "react";
+import { useCookies } from "react-cookie";
 import { MdOutlineEdit } from "react-icons/md";
 import { ProductTypes } from "../../../../interface.model";
+import { useDeleteProductMutation } from "../../../services/productApi/productApi";
+import { UpdateProductModals } from "../../organism";
+import Button from "../button/button";
 
 const CardProduct = ({
   _id,
@@ -9,9 +14,20 @@ const CardProduct = ({
   price,
   thumbnail,
 }: ProductTypes) => {
+  const [edit, setEdit] = useState(false);
+  const [cookies] = useCookies(["token"]);
+  const [deleteProduct] = useDeleteProductMutation();
+
+  const handleDelete = () => {
+    deleteProduct({ id: _id, token: cookies.token as string });
+  };
   return (
     <div className="rounded p-4 bg-slate-100 flex flex-col relative">
-      <div className="edit cursor-pointer absolute top-2 text-xl right-2 p-1 bg-white rounded shadow-sm hover:bg-slate-100">
+      {edit && <UpdateProductModals close={(e) => setEdit(e)} />}
+      <div
+        className="edit cursor-pointer absolute top-2 text-xl right-2 p-1 bg-white rounded shadow-sm hover:bg-slate-100"
+        onClick={() => setEdit(true)}
+      >
         <MdOutlineEdit />
       </div>
       <div className="img w-0 h-0 pb-2/3 pr-full rounded-t bg-slate-500">
@@ -31,6 +47,11 @@ const CardProduct = ({
           <p className="author text-sm font-semibold text-biru-2 px-2">
             {creator}
           </p>
+          <div className="button justify-self-center">
+            <Button type="button" onClick={handleDelete}>
+              Delete
+            </Button>
+          </div>
         </div>
       </div>
     </div>

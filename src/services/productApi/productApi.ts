@@ -1,5 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { GetProductsType } from "../../../interface.model";
+import {
+  AddProductReq,
+  DeleteProductReq,
+  GetProductById,
+  GetProductsType,
+  UpdateProductReq,
+} from "../../../interface.model";
 
 export const productApi = createApi({
   reducerPath: "productApi",
@@ -8,24 +14,38 @@ export const productApi = createApi({
     getProducts: builder.query<GetProductsType, undefined>({
       query: () => "/product",
     }),
-    addProduct: builder.mutation({
-      query: (body) => ({
+    addProduct: builder.mutation<any, AddProductReq>({
+      query: ({ body, token }) => ({
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         url: "/product",
         method: "POST",
         body,
       }),
     }),
-    updateProduct: builder.mutation({
-      query: ({ body, id }) => ({
+    updateProduct: builder.mutation<any, UpdateProductReq>({
+      query: ({ body, id, token }) => ({
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         url: `/product/${id}`,
         method: "POST",
         body,
       }),
     }),
-    deleteProduct: builder.mutation({
+    deleteProduct: builder.mutation<any, DeleteProductReq>({
       query: (id) => ({
         url: `/product/${id}`,
         method: "DELETE",
+      }),
+    }),
+    getProductById: builder.query<any, GetProductById>({
+      query: ({ id, token }) => ({
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        url: `/product/${id}`,
       }),
     }),
   }),
@@ -36,4 +56,5 @@ export const {
   useAddProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
+  useGetProductByIdQuery,
 } = productApi;

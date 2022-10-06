@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-
+import productReducer from "../features/productSlice/productSlice";
 import userReducer from "../features/userSlice/userSlice";
 import { productApi } from "../services/productApi/productApi";
 import { userApi } from "../services/userApi/userApi";
@@ -7,6 +7,7 @@ import { userApi } from "../services/userApi/userApi";
 export const store = configureStore({
   reducer: {
     user: userReducer,
+    product: productReducer,
     [userApi.reducerPath]: userApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
   },

@@ -4,12 +4,13 @@ export interface InputProps {
   value: string | number;
   onChange: (value: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
-  type: "text" | "password" | "email";
+  type: "text" | "password" | "email" | "number";
 }
 
 export interface ButtonProps {
   children: React.ReactNode;
   type: "button" | "submit" | "reset";
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export interface FormUserProps {
@@ -70,4 +71,41 @@ export interface ProductTypes {
 export interface GetProductsType {
   message: string;
   data: ProductTypes[];
+}
+
+export interface GetProfileReq {
+  id: string;
+  token: string;
+}
+
+export interface AddProductReq {
+  body: {
+    title: string;
+    desc: string;
+    price: number;
+    creator: string;
+    thumbnail: string;
+  };
+  token: string;
+}
+export interface UpdateProductReq {
+  body: {
+    title: string;
+    desc: string;
+    price: number;
+    creator: string;
+    thumbnail: string;
+  };
+  token: string;
+  id: string;
+}
+
+export interface DeleteProductReq {
+  id: string;
+  token: string;
+}
+
+export interface GetProductById {
+  id: string;
+  token: string;
 }
