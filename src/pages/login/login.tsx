@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [cookies, setCookies] = useCookies(["token"]);
+  const [cookies, setCookies] = useCookies(["token", "user"]);
   const [alert, setAlert] = useState("");
   const [login, { isSuccess, isLoading, error, data }] = useLoginMutation();
   const email = useSelector((state: RootState) => state.user.email);
@@ -32,6 +32,7 @@ const Login = () => {
   useEffect(() => {
     if (isSuccess) {
       setCookies("token", data?.token);
+      setCookies("user", data?.uid);
       navigate("/");
     }
   }, [isSuccess]);

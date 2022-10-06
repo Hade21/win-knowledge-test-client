@@ -57,3 +57,17 @@ export interface GetProfileResponse {
     gender: string;
   };
 }
+
+export interface ProductTypes {
+  _id: string;
+  title: string;
+  desc: string;
+  price: number;
+  creator: string;
+  thumbnail: string;
+}
+
+export interface GetProductsType {
+  message: string;
+  data: ProductTypes[];
+}
