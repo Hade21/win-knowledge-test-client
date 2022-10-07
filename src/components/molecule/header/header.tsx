@@ -6,9 +6,16 @@ import { Avatar } from "../../../assets";
 
 const Header = () => {
   const navigate = useNavigate();
-  const [cookies] = useCookies(["user"]);
+  const [cookies, setCookies, removeCookies] = useCookies(["user", "token"]);
   const uid = cookies.user;
   const { data } = useGetUserQuery(uid);
+
+  const handleLogout = () => {
+    removeCookies("token");
+    removeCookies("user");
+    navigate("/");
+  };
+
   return (
     <header className="px-4 md:px-20 py-2 md:py-4 border-b border-b-tipis flex justify-between items-center">
       <div className="left">
@@ -25,7 +32,13 @@ const Header = () => {
             className="object-cover object-center cursor-pointer active:translate-t-1 transform transition duration-300 ease-in-out"
           />
         </div>
-        <Link to="/login">Login</Link>
+        {!uid ? (
+          <Link to="/login">Login</Link>
+        ) : (
+          <p className="cursor-pointer" onClick={handleLogout}>
+            Logout
+          </p>
+        )}
       </div>
     </header>
   );
