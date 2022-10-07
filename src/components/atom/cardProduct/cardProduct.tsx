@@ -23,7 +23,7 @@ const CardProduct = ({
   };
   return (
     <div className="rounded p-4 bg-slate-100 flex flex-col relative">
-      {edit && <UpdateProductModals close={(e) => setEdit(e)} />}
+      {edit && <UpdateProductModals close={(e) => setEdit(e)} id={_id} />}
       <div
         className="edit cursor-pointer absolute top-2 text-xl right-2 p-1 bg-white rounded shadow-sm hover:bg-slate-100"
         onClick={() => setEdit(true)}

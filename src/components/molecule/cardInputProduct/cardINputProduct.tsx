@@ -15,6 +15,7 @@ import { useGetUserQuery } from "../../../services/userApi/userApi";
 import {
   useAddProductMutation,
   useGetProductByIdQuery,
+  useGetProductsQuery,
   useUpdateProductMutation,
 } from "../../../services/productApi/productApi";
 
@@ -29,9 +30,9 @@ const CardINputProduct = ({ success, type, _id }: CardInputProductProps) => {
   const [cookies] = useCookies(["token", "user"]);
   const { data } = useGetUserQuery({ id: cookies.user, token: cookies.token });
   const [addProduct, { isSuccess: addSuccess }] = useAddProductMutation();
-  const { data: dataByID } = useGetProductByIdQuery({
+  const { data: dataByID, isSuccess } = useGetProductByIdQuery({
     id: _id as string,
-    token: cookies.token,
+    token: cookies.token as string,
   });
   const [updateProduct, { isSuccess: updateSuccess }] =
     useUpdateProductMutation();
@@ -83,7 +84,6 @@ const CardINputProduct = ({ success, type, _id }: CardInputProductProps) => {
       thumbnail,
       creator,
     };
-    console.log(body);
     if (type === "add") {
       await addProduct({ body, token: cookies.token });
     } else if (type === "edit" && _id) {
@@ -104,33 +104,32 @@ const CardINputProduct = ({ success, type, _id }: CardInputProductProps) => {
     } else if (updateSuccess) {
       success(false);
     }
+    if (addSuccess || updateSuccess) {
+      dispatch(setTitle(""));
+      dispatch(setPrice(0));
+      dispatch(setDesc(""));
+      dispatch(setThumbnail(""));
+      dispatch(setCreator(""));
+    }
   }, [addSuccess, updateSuccess]);
   useEffect(() => {
     if (type === "edit") {
-      dispatch(setTitle(title));
-      dispatch(setPrice(price));
-      dispatch(setDesc(desc));
-      dispatch(setThumbnail(thumbnail));
-      dispatch(setCreator(creator));
-    }
-  }, []);
-  useEffect(() => {
-    if (type === "edit") {
+      console.log(dataByID);
       dispatch(setTitle(dataByID?.data.title));
       dispatch(setPrice(dataByID?.data.price));
       dispatch(setDesc(dataByID?.data.desc));
       dispatch(setThumbnail(dataByID?.data.thumbnail));
       dispatch(setCreator(dataByID?.data.creator));
     }
-  }, []);
+  }, [isSuccess]);
 
   return (
     <div className="bg-white rounded p-4 w-2/3 flex justify-center items-center gap-4">
       <div className="image flex-1 flex flex-col gap-4 items-center">
-        <div className="img w-full h-2/3 bg-slate-500 rounded overflow-hidden">
+        <div className="img w-full h-2/3 rounded overflow-hidden">
           <img
             src={thumbnail}
-            alt="thumbnail"
+            alt=""
             className="object-cover object-center w-full h-full"
           />
         </div>

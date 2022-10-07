@@ -10,6 +10,7 @@ import {
 export const productApi = createApi({
   reducerPath: "productApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000" }),
+  tagTypes: ["Product"],
   endpoints: (builder) => ({
     getProducts: builder.query<GetProductsType, undefined>({
       query: () => "/product",
@@ -30,12 +31,15 @@ export const productApi = createApi({
           Authorization: `Bearer ${token}`,
         },
         url: `/product/${id}`,
-        method: "POST",
+        method: "PATCH",
         body,
       }),
     }),
     deleteProduct: builder.mutation<any, DeleteProductReq>({
-      query: (id) => ({
+      query: ({ id, token }) => ({
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         url: `/product/${id}`,
         method: "DELETE",
       }),

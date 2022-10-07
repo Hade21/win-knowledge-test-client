@@ -4,7 +4,6 @@ import { CardProduct } from "../../atom";
 const ListProduct = () => {
   const { data, isLoading, isError, error } = useGetProductsQuery(undefined);
   const products = data?.data;
-  console.log(error);
 
   return (
     <div className="wrapper">
