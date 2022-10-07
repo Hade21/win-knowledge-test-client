@@ -47,11 +47,13 @@ const CardProduct = ({
           <p className="author text-sm font-semibold text-biru-2 px-2">
             {creator}
           </p>
-          <div className="button justify-self-center">
-            <Button type="button" onClick={handleDelete}>
-              Delete
-            </Button>
-          </div>
+          {cookies.token && (
+            <div className="button justify-self-center">
+              <Button type="button" onClick={handleDelete}>
+                Delete
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>
