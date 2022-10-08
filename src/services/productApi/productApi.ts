@@ -4,6 +4,8 @@ import {
   DeleteProductReq,
   GetProductById,
   GetProductsType,
+  GetProfileReq,
+  GetProfileResponse,
   UpdateProductReq,
 } from "../../../interface.model";
 
@@ -14,6 +16,7 @@ export const productApi = createApi({
   endpoints: (builder) => ({
     getProducts: builder.query<GetProductsType, undefined>({
       query: () => "/product",
+      providesTags: ["Product"],
     }),
     addProduct: builder.mutation<any, AddProductReq>({
       query: ({ body, token }) => ({
@@ -24,6 +27,7 @@ export const productApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["Product"],
     }),
     updateProduct: builder.mutation<any, UpdateProductReq>({
       query: ({ body, id, token }) => ({
@@ -34,6 +38,7 @@ export const productApi = createApi({
         method: "PATCH",
         body,
       }),
+      invalidatesTags: ["Product"],
     }),
     deleteProduct: builder.mutation<any, DeleteProductReq>({
       query: ({ id, token }) => ({
@@ -43,6 +48,7 @@ export const productApi = createApi({
         url: `/product/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["Product"],
     }),
     getProductById: builder.query<any, GetProductById>({
       query: ({ id, token }) => ({
@@ -51,6 +57,16 @@ export const productApi = createApi({
         },
         url: `/product/${id}`,
       }),
+      providesTags: ["Product"],
+    }),
+    getUser: builder.query<GetProfileResponse, GetProfileReq>({
+      query: ({ id, token }) => ({
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        url: `/user/${id}`,
+      }),
+      providesTags: ["Product"],
     }),
   }),
 });
@@ -61,4 +77,5 @@ export const {
   useUpdateProductMutation,
   useDeleteProductMutation,
   useGetProductByIdQuery,
+  useGetUserQuery,
 } = productApi;

@@ -1,7 +1,7 @@
 import { Footer, Header } from "../../components";
 import { useParams } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { useGetUserQuery } from "../../services/userApi/userApi";
+import { useGetUserQuery } from "../../services/productApi/productApi";
 import { Avatar } from "../../assets";
 
 const Profile = () => {

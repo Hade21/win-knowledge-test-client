@@ -31,8 +31,8 @@ const Login = () => {
   }, [error]);
   useEffect(() => {
     if (isSuccess) {
-      setCookies("token", data?.token);
-      setCookies("user", data?.uid);
+      setCookies("token", data?.token, { path: "/" });
+      setCookies("user", data?.uid, { path: "/" });
       navigate("/");
     }
   }, [isSuccess]);

@@ -11,11 +11,10 @@ import {
 } from "../../../features/productSlice/productSlice";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { useGetUserQuery } from "../../../services/userApi/userApi";
+import { useGetUserQuery } from "../../../services/productApi/productApi";
 import {
   useAddProductMutation,
   useGetProductByIdQuery,
-  useGetProductsQuery,
   useUpdateProductMutation,
 } from "../../../services/productApi/productApi";
 
@@ -28,11 +27,16 @@ const CardINputProduct = ({ success, type, _id }: CardInputProductProps) => {
   const dispatch = useDispatch();
   const [base64, setBase64] = useState("");
   const [cookies] = useCookies(["token", "user"]);
-  const { data } = useGetUserQuery({ id: cookies.user, token: cookies.token });
+  const userId = cookies.user;
+  const token = cookies.token;
   const [addProduct, { isSuccess: addSuccess }] = useAddProductMutation();
   const { data: dataByID, isSuccess } = useGetProductByIdQuery({
     id: _id as string,
-    token: cookies.token as string,
+    token,
+  });
+  const { data: userData, isSuccess: userFound } = useGetUserQuery({
+    id: userId,
+    token,
   });
   const [updateProduct, { isSuccess: updateSuccess }] =
     useUpdateProductMutation();
@@ -62,9 +66,8 @@ const CardINputProduct = ({ success, type, _id }: CardInputProductProps) => {
       dispatch(setTitle(value));
     } else if (id === "desc") {
       dispatch(setDesc(value));
-    } else if (id === "creator") {
-      dispatch(setCreator(value));
     }
+    dispatch(setCreator(userData?.data.fullname as string));
   };
   const handlePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
@@ -77,6 +80,8 @@ const CardINputProduct = ({ success, type, _id }: CardInputProductProps) => {
   };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(creator, userData?.data.fullname);
+
     const body = {
       title,
       price,
@@ -90,31 +95,21 @@ const CardINputProduct = ({ success, type, _id }: CardInputProductProps) => {
       await updateProduct({ body, token: cookies.token, id: _id });
     }
   };
-  useEffect(() => {
-    if (data) {
-      setCreator(data.data.fullname);
-    }
-  }, []);
+
   useEffect(() => {
     dispatch(setThumbnail(base64));
   }, [base64, dispatch, thumbnail]);
   useEffect(() => {
-    if (addSuccess) {
-      success(false);
-    } else if (updateSuccess) {
-      success(false);
-    }
     if (addSuccess || updateSuccess) {
+      success(false);
       dispatch(setTitle(""));
       dispatch(setPrice(0));
       dispatch(setDesc(""));
       dispatch(setThumbnail(""));
-      dispatch(setCreator(""));
     }
   }, [addSuccess, updateSuccess]);
   useEffect(() => {
     if (type === "edit") {
-      console.log(dataByID);
       dispatch(setTitle(dataByID?.data.title));
       dispatch(setPrice(dataByID?.data.price));
       dispatch(setDesc(dataByID?.data.desc));
