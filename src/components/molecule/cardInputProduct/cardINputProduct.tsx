@@ -26,15 +26,19 @@ interface CardInputProductProps {
 const CardINputProduct = ({ success, type, _id }: CardInputProductProps) => {
   const dispatch = useDispatch();
   const [base64, setBase64] = useState("");
-  const [cookies] = useCookies(["token", "user"]);
+  const [cookies, setCookies, removeCookies] = useCookies(["token", "user"]);
   const userId = cookies.user;
   const token = cookies.token;
   const [addProduct, { isSuccess: addSuccess }] = useAddProductMutation();
-  const { data: dataByID, isSuccess } = useGetProductByIdQuery({
+  const {
+    data: dataByID,
+    isSuccess,
+    isError: productError,
+  } = useGetProductByIdQuery({
     id: _id as string,
     token,
   });
-  const { data: userData, isSuccess: userFound } = useGetUserQuery({
+  const { data: userData, isError: userError } = useGetUserQuery({
     id: userId,
     token,
   });
@@ -80,7 +84,6 @@ const CardINputProduct = ({ success, type, _id }: CardInputProductProps) => {
   };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(creator, userData?.data.fullname);
 
     const body = {
       title,
@@ -98,7 +101,7 @@ const CardINputProduct = ({ success, type, _id }: CardInputProductProps) => {
 
   useEffect(() => {
     dispatch(setThumbnail(base64));
-  }, [base64, dispatch, thumbnail]);
+  }, [base64, dispatch]);
   useEffect(() => {
     if (addSuccess || updateSuccess) {
       success(false);
@@ -109,14 +112,21 @@ const CardINputProduct = ({ success, type, _id }: CardInputProductProps) => {
     }
   }, [addSuccess, updateSuccess]);
   useEffect(() => {
-    if (type === "edit") {
-      dispatch(setTitle(dataByID?.data.title));
-      dispatch(setPrice(dataByID?.data.price));
-      dispatch(setDesc(dataByID?.data.desc));
-      dispatch(setThumbnail(dataByID?.data.thumbnail));
-      dispatch(setCreator(dataByID?.data.creator));
+    if (type === "edit" && dataByID) {
+      dispatch(setTitle(dataByID.data.title));
+      dispatch(setPrice(dataByID.data.price));
+      dispatch(setDesc(dataByID.data.desc));
+      dispatch(setThumbnail(dataByID.data.thumbnail as string));
+      dispatch(setCreator(dataByID.data.creator));
     }
   }, [isSuccess]);
+  useEffect(() => {
+    if (productError || userError) {
+      removeCookies("user");
+      removeCookies("token");
+      success(false);
+    }
+  }, []);
 
   return (
     <div className="bg-white rounded p-4 w-2/3 flex justify-center items-center gap-4">

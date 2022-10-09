@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { MdOutlineEdit } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
@@ -15,12 +15,10 @@ const CardProduct = ({
   price,
   thumbnail,
 }: ProductTypes) => {
+  const navigate = useNavigate();
   const [edit, setEdit] = useState(false);
   const [cookies] = useCookies(["token"]);
   const [deleteProduct] = useDeleteProductMutation();
-  const navigate = useNavigate();
-  const image = thumbnail as string;
-  console.log(image);
 
   const handleEdit = () => {
     if (cookies.token) {
@@ -30,10 +28,10 @@ const CardProduct = ({
       navigate("/login");
     }
   };
-
   const handleDelete = () => {
     deleteProduct({ id: _id, token: cookies.token as string });
   };
+
   return (
     <div className="rounded p-4 bg-slate-100 flex flex-col relative">
       {edit && <UpdateProductModals close={(e) => setEdit(e)} id={_id} />}
@@ -43,11 +41,14 @@ const CardProduct = ({
       >
         <MdOutlineEdit />
       </div>
-      <div className="img w-0 h-0 pb-2/3 pr-full rounded-t bg-slate-500">
+      <div
+        className="img w-full h-2/3 rounded-t bg-slate-500 overflow-hidden"
+        id="image"
+      >
         <img
-          src={image}
-          alt="thumbnail"
-          className="object-cover object-center overflow-hidden"
+          src={thumbnail}
+          alt=""
+          className="w-full h-full object-cover object-center"
         />
       </div>
       <div className="content w-full flex flex-col h-full justify-between bg-white rounded pb-4">
