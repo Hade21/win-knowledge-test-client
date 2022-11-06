@@ -4,7 +4,10 @@ const initialState = {
   title: "",
   desc: "",
   price: 0,
-  creator: "",
+  creator: {
+    uid: "",
+    name: "",
+  },
   thumbnail: "",
 };
 
@@ -21,7 +24,10 @@ export const productSlice = createSlice({
     setPrice: (state, action: PayloadAction<number>) => {
       state.price = action.payload;
     },
-    setCreator: (state, action: PayloadAction<string>) => {
+    setCreator: (
+      state,
+      action: PayloadAction<{ uid: string; name: string }>
+    ) => {
       state.creator = action.payload;
     },
     setThumbnail: (state, action: PayloadAction<string>) => {

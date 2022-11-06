@@ -26,8 +26,11 @@ interface CardInputProductProps {
 const CardINputProduct = ({ success, type, _id }: CardInputProductProps) => {
   const dispatch = useDispatch();
   const [base64, setBase64] = useState("");
-  const [cookies, setCookies, removeCookies] = useCookies(["token", "user"]);
-  const userId = cookies.user;
+  const [cookies, setCookies, removeCookies] = useCookies([
+    "token",
+    "user",
+    "uid",
+  ]);
   const token = cookies.token;
   const [addProduct, { isSuccess: addSuccess }] = useAddProductMutation();
   const {
@@ -36,10 +39,6 @@ const CardINputProduct = ({ success, type, _id }: CardInputProductProps) => {
     isError: productError,
   } = useGetProductByIdQuery({
     id: _id as string,
-    token,
-  });
-  const { data: userData, isError: userError } = useGetUserQuery({
-    id: userId,
     token,
   });
   const [updateProduct, { isSuccess: updateSuccess }] =
@@ -71,7 +70,9 @@ const CardINputProduct = ({ success, type, _id }: CardInputProductProps) => {
     } else if (id === "desc") {
       dispatch(setDesc(value));
     }
-    dispatch(setCreator(userData?.data.fullname as string));
+    const name = cookies.user;
+    const uid = cookies.uid;
+    dispatch(setCreator({ name, uid }));
   };
   const handlePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
@@ -121,7 +122,7 @@ const CardINputProduct = ({ success, type, _id }: CardInputProductProps) => {
     }
   }, [isSuccess]);
   useEffect(() => {
-    if (productError || userError) {
+    if (productError) {
       removeCookies("user");
       removeCookies("token");
       success(false);
@@ -129,13 +130,13 @@ const CardINputProduct = ({ success, type, _id }: CardInputProductProps) => {
   }, []);
 
   return (
-    <div className="bg-white rounded p-4 w-2/3 flex justify-center items-center gap-4">
-      <div className="image flex-1 flex flex-col gap-4 items-center">
-        <div className="img w-full h-2/3 rounded overflow-hidden">
+    <div className="flex w-2/3 items-center justify-center gap-4 rounded bg-white p-4">
+      <div className="image flex flex-1 flex-col items-center gap-4">
+        <div className="img h-2/3 w-full overflow-hidden rounded">
           <img
             src={thumbnail}
             alt=""
-            className="object-cover object-center w-full h-full"
+            className="h-full w-full object-cover object-center"
           />
         </div>
         <div className="add">
@@ -147,7 +148,7 @@ const CardINputProduct = ({ success, type, _id }: CardInputProductProps) => {
               className="sr-only"
               onChange={handleImage}
             />
-            <div className="wrapper text-4xl cursor-pointer">
+            <div className="wrapper cursor-pointer text-4xl">
               <FcAddImage />
             </div>
           </label>

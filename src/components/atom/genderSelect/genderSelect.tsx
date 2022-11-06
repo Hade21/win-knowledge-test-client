@@ -5,17 +5,17 @@ interface GenderSelectProps {
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 const GenderSelect = ({ value, onChange }: GenderSelectProps) => {
-  const [selected, setSelected] = useState(value);
   return (
     <div className="flex flex-col gap-2">
       <label htmlFor="list-categories">Select Gender</label>
       <select
         name="list-category"
-        value={selected}
+        value={value}
         id="list-category"
         onChange={onChange}
-        className="rounded border border-input-border bg-white p-4"
+        className="rounded border border-input-border bg-white px-3 py-2"
       >
+        <option value=""></option>
         <option value="Male">Male</option>;
         <option value="Female">Female</option>
       </select>

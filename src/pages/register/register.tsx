@@ -40,12 +40,12 @@ const Register = () => {
   }, [isSuccess]);
 
   return (
-    <div className="w-screen h-screen bg-black bg-opacity-30 flex items-center justify-center px-4">
-      <div className="card p-8 lg:max-w-1/3 bg-white rounded flex flex-col gap-8 w-full">
+    <div className="flex h-screen w-screen items-center justify-center bg-black bg-opacity-30 px-4">
+      <div className="card flex w-full flex-col gap-8 rounded bg-white p-8 md:w-1/2">
         <div className="title">
           <h1 className="text-4xl font-medium">Register</h1>
           {alert && (
-            <p className="alert px-4 py-2 bg-merah rounded text-white mt-2">
+            <p className="alert mt-2 rounded bg-merah px-4 py-2 text-white">
               {alert}
             </p>
           )}

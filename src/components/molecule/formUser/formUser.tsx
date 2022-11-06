@@ -10,6 +10,7 @@ import {
   setGender,
   setPassword,
 } from "../../../features/userSlice/userSlice";
+import { useEffect } from "react";
 
 const FormUser = ({ type, onSubmit }: FormUserProps) => {
   const dispatch = useDispatch();
@@ -31,8 +32,16 @@ const FormUser = ({ type, onSubmit }: FormUserProps) => {
   const handleGender = (e: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(setGender(e.target.value));
   };
+
+  useEffect(() => {
+    dispatch(setEmail(""));
+    dispatch(setFullname(""));
+    dispatch(setGender(""));
+    dispatch(setPassword(""));
+  }, [type]);
+
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-2 w-full">
+    <form onSubmit={onSubmit} className="flex w-full flex-col gap-2">
       {type === "register" ? (
         <Input
           id="fullname"
@@ -51,6 +60,9 @@ const FormUser = ({ type, onSubmit }: FormUserProps) => {
         value={email}
         onChange={handleChange}
       />
+      {type === "register" ? (
+        <GenderSelect value={gender} onChange={handleGender} />
+      ) : null}
       <Input
         id="password"
         label="Password"
@@ -59,10 +71,7 @@ const FormUser = ({ type, onSubmit }: FormUserProps) => {
         value={password}
         onChange={handleChange}
       />
-      {type === "register" ? (
-        <GenderSelect value={gender} onChange={handleGender} />
-      ) : null}
-      <div className="button mt-8">
+      <div className="button mx-auto mt-8">
         <Button type="submit">
           {type === "register" ? "Register" : "Login"}
         </Button>
@@ -71,14 +80,14 @@ const FormUser = ({ type, onSubmit }: FormUserProps) => {
         {type === "register" ? (
           <p>
             Don't have an Account?{" "}
-            <Link to="/login" className="text-merah cursor-pointer">
+            <Link to="/login" className="cursor-pointer text-merah">
               Login
             </Link>
           </p>
         ) : (
           <p>
             Have an Account?{" "}
-            <Link to="/register" className="text-merah cursor-pointer">
+            <Link to="/register" className="cursor-pointer text-merah">
               Register
             </Link>
           </p>

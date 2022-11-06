@@ -3,13 +3,13 @@ import { Footer, Header, ProductSection } from "../../components";
 
 const Homepage = () => {
   return (
-    <>
-      <Header />
+    <div className="flex flex-col justify-between min-h-screen">
       <div className="main">
+        <Header />
         <ProductSection />
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
 

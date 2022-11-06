@@ -7,7 +7,9 @@ import {
 
 export const userApi = createApi({
   reducerPath: "userApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/user" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "https://pasar-online.up.railway.app/user",
+  }),
   endpoints: (builder) => ({
     register: builder.mutation<any, SignUpBody>({
       query: (body) => ({

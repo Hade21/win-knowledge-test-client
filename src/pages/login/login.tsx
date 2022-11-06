@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [cookies, setCookies] = useCookies(["token", "user"]);
+  const [cookies, setCookies] = useCookies(["token", "user", "uid"]);
   const [alert, setAlert] = useState("");
   const [login, { isSuccess, isLoading, error, data }] = useLoginMutation();
   const email = useSelector((state: RootState) => state.user.email);
@@ -31,19 +31,21 @@ const Login = () => {
   }, [error]);
   useEffect(() => {
     if (isSuccess) {
+      console.log(data);
       setCookies("token", data?.token, { path: "/" });
-      setCookies("user", data?.uid, { path: "/" });
+      setCookies("user", data?.fullname, { path: "/" });
+      setCookies("uid", data?.uid, { path: "/" });
       navigate("/");
     }
   }, [isSuccess]);
 
   return (
-    <div className="w-screen h-screen bg-black bg-opacity-30 flex items-center justify-center px-4">
-      <div className="card p-8 lg:max-w-1/3 bg-white rounded flex flex-col gap-8 w-full">
+    <div className="flex h-screen w-screen items-center justify-center bg-black bg-opacity-30 px-4">
+      <div className="card flex w-full flex-col gap-8 rounded bg-white p-8 md:max-w-1/2 lg:max-w-1/3">
         <div className="title">
           <h1 className="text-4xl font-medium">Login</h1>
           {alert && (
-            <p className="alert px-4 py-2 bg-merah rounded text-white mt-2">
+            <p className="alert mt-2 rounded bg-merah px-4 py-2 text-white">
               {alert}
             </p>
           )}

@@ -11,12 +11,12 @@ import {
 
 export const productApi = createApi({
   reducerPath: "productApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000" }),
-  tagTypes: ["Product"],
+  baseQuery: fetchBaseQuery({ baseUrl: "https://pasar-online.up.railway.app" }),
+  tagTypes: ["AddProduct", "EditProduct", "DeleteProduct"],
   endpoints: (builder) => ({
     getProducts: builder.query<GetProductsType, undefined>({
       query: () => "/product",
-      providesTags: ["Product"],
+      providesTags: ["AddProduct", "EditProduct", "DeleteProduct"],
     }),
     addProduct: builder.mutation<any, AddProductReq>({
       query: ({ body, token }) => ({
@@ -27,7 +27,7 @@ export const productApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Product"],
+      invalidatesTags: ["AddProduct"],
     }),
     updateProduct: builder.mutation<any, UpdateProductReq>({
       query: ({ body, id, token }) => ({
@@ -38,7 +38,7 @@ export const productApi = createApi({
         method: "PATCH",
         body,
       }),
-      invalidatesTags: ["Product"],
+      invalidatesTags: ["EditProduct"],
     }),
     deleteProduct: builder.mutation<any, DeleteProductReq>({
       query: ({ id, token }) => ({
@@ -48,7 +48,7 @@ export const productApi = createApi({
         url: `/product/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Product"],
+      invalidatesTags: ["DeleteProduct"],
     }),
     getProductById: builder.query<any, GetProductById>({
       query: ({ id, token }) => ({
@@ -57,7 +57,7 @@ export const productApi = createApi({
         },
         url: `/product/${id}`,
       }),
-      providesTags: ["Product"],
+      // providesTags: ["EditProduct"],
     }),
     getUser: builder.query<GetProfileResponse, GetProfileReq>({
       query: ({ id, token }) => ({
@@ -66,7 +66,7 @@ export const productApi = createApi({
         },
         url: `/user/${id}`,
       }),
-      providesTags: ["Product"],
+      // providesTags: ["Product"],
     }),
   }),
 });

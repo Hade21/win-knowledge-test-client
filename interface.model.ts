@@ -64,7 +64,10 @@ export interface ProductTypes {
   title: string;
   desc: string;
   price: number;
-  creator: string;
+  creator: {
+    uid: string;
+    name: string;
+  };
   thumbnail: string;
 }
 
@@ -83,7 +86,10 @@ export interface AddProductReq {
     title: string;
     desc: string;
     price: number;
-    creator: string;
+    creator: {
+      uid: string;
+      name: string;
+    };
     thumbnail: string;
   };
   token: string;
@@ -93,7 +99,10 @@ export interface UpdateProductReq {
     title: string;
     desc: string;
     price: number;
-    creator: string;
+    creator: {
+      uid: string;
+      name: string;
+    };
     thumbnail: string;
   };
   token: string;

@@ -33,10 +33,10 @@ const Header = () => {
           />
         </div>
         {!uid ? (
-          <Link to="/login">Login</Link>
+          <Link to="/login">Masuk</Link>
         ) : (
           <p className="cursor-pointer" onClick={handleLogout}>
-            Logout
+            Keluar
           </p>
         )}
       </div>
