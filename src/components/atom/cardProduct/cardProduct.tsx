@@ -33,36 +33,36 @@ const CardProduct = ({
   };
 
   return (
-    <div className="rounded p-4 bg-slate-100 flex flex-col relative">
+    <div className="relative flex flex-col rounded bg-slate-100 p-4">
       {edit && <UpdateProductModals close={(e) => setEdit(e)} id={_id} />}
       <div
-        className="edit cursor-pointer absolute top-2 text-xl right-2 p-1 bg-white rounded shadow-sm hover:bg-slate-100"
+        className="edit absolute top-2 right-2 cursor-pointer rounded bg-white p-1 text-xl shadow-sm hover:bg-slate-100"
         onClick={handleEdit}
       >
         <MdOutlineEdit />
       </div>
       <div
-        className="img w-full h-2/3 rounded-t bg-slate-500 overflow-hidden"
+        className="img h-2/3 w-full overflow-hidden rounded-t bg-slate-500"
         id="image"
       >
         <img
           src={thumbnail}
           alt=""
-          className="w-full h-full object-cover object-center"
+          className="h-full w-full object-cover object-center"
         />
       </div>
-      <div className="content w-full flex flex-col h-full justify-between bg-white rounded pb-4">
-        <div className="title mb-4 flex justify-between bg-merah text-white rounded-b p-2 items-center">
+      <div className="content flex h-full w-full flex-col justify-between rounded bg-white pb-4">
+        <div className="title mb-4 flex items-center justify-between rounded-b bg-merah p-2 text-white">
           <h2 className="title text-xl font-semibold">{title}</h2>
           <p className="price text-base">Rp. {price}</p>
         </div>
-        <div className="detail flex h-full gap-6 justify-between flex-col">
+        <div className="detail flex h-full flex-col justify-between gap-6">
           <p className="desc px-2 text-sm text-slate-700">{desc}</p>
-          <p className="author text-sm font-semibold text-biru-2 px-2">
-            {creator}
+          <p className="author px-2 text-sm font-semibold text-biru-2">
+            {creator.name}
           </p>
           {cookies.token && (
-            <div className="button px-2 w-full">
+            <div className="button w-full px-2">
               <Button type="button" onClick={handleDelete}>
                 Delete
               </Button>
