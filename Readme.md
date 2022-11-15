@@ -1,6 +1,1 @@
-Cara menjalankan aplikasi di lokal:
-
-1.Download file zip atau clone repository ini
-2.Buka folder yang sudah didownload
-3.Instal dependency dengan perintah npm install pada terminal
-4.Jalankan aplikasi dengan perintah npm run dev
+Create app market gallery for seller where we can put our product, edit, and delete. Build using vite + react + ts and tailwindcss. Express + ts + mongoDB for the backend, use jwt for login and rtk query for fetching data.
